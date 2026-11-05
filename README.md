@@ -8,6 +8,8 @@ The prebuilt `spirula` binary needs **glibc 2.38 (Ubuntu 24.04+)**, and colmap-b
 
 ## Repo setup (same as LFStudio)
 
+> `build-image.yml` sits in the folder root only because the file bridge cannot write into `.github/`. Move it to `.github/workflows/build-image.yml` before pushing.
+
 1. Create a new GitHub repo (public, so Actions minutes are free), e.g. `ftalijic/SpirulaStudio`, and push this folder to it.
 2. Add the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repo secrets (the same values as in the LFStudio repo).
 3. Pushing to `main` builds the image automatically. You can also run it manually from Actions → *Build and push Spirula Studio image*. The build takes minutes because nothing is compiled.
@@ -26,6 +28,7 @@ To bump Spirula, edit `SPIRULA_VERSION` and `SPIRULA_SHA256` in the Dockerfile. 
 cat /root/vulkan-check.log     # GPU name + Vulkan apiVersion; should NOT show ERROR
 spirula sam devices            # must list the GPU as meeting the baseline (Vulkan 1.2 + BDA + timeline semaphores)
 colmap -h | head -3            # "COLMAP 4.x ... with CUDA"
+cat /opt/spirula/VERSION       # pinned Spirula release, e.g. 2026.10.30
 ```
 
 If `spirula sam devices` says "no Vulkan devices were found", the host isn't giving the container the driver's graphics/Vulkan libraries. The image sets `NVIDIA_DRIVER_CAPABILITIES=all` and ships a fallback ICD file, so check `ls /usr/lib/x86_64-linux-gnu/libGLX_nvidia*`. If nothing is there, try a different GPU type or datacenter.

@@ -69,8 +69,8 @@ FROM ubuntu:24.04 AS spirula
 # Pinned on purpose (lesson from LichtFeld's floating LFS_REF=master): bump
 # both values together when moving to a new release. Releases:
 # https://github.com/harry7557558/spirula-studio/releases
-ARG SPIRULA_VERSION=2026.9.24
-ARG SPIRULA_SHA256=3560119e1d6ff91fa4bf49ed6a196f8b092db700e252f6288aa57a7568a65143
+ARG SPIRULA_VERSION=2026.10.30
+ARG SPIRULA_SHA256=19e9fdabdfa73d26cabd7e078ea6b12f2f8b976e457d21b83d6a30e4921ad5a2
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl unzip \
     && rm -rf /var/lib/apt/lists/*
@@ -141,7 +141,7 @@ RUN ln -s /opt/spirula/spirula /usr/local/bin/spirula \
 COPY --from=colmap /out/bin/colmap /opt/colmap/bin/colmap
 COPY --from=colmap /out/lib/ /opt/colmap/lib/
 COPY colmap-wrapper.sh /usr/local/bin/colmap
-RUN chmod +x /usr/local/bin/colmap \
+RUN sed -i "s/\r$//" /usr/local/bin/colmap && chmod +x /usr/local/bin/colmap \
     && if LD_LIBRARY_PATH=/opt/colmap/lib ldd /opt/colmap/bin/colmap | grep "not found"; then \
          echo "COLMAP is missing libs on 24.04 - see above"; exit 1; fi \
     && colmap -h | grep -q "with CUDA" \
@@ -158,7 +158,7 @@ RUN mkdir -p /var/run/sshd /root/.ssh && chmod 700 /root/.ssh \
     && sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/' /etc/ssh/sshd_config
 
 COPY start.sh /root/start.sh
-RUN chmod +x /root/start.sh
+RUN sed -i "s/\r$//" /root/start.sh && chmod +x /root/start.sh
 
 WORKDIR /root
 ENTRYPOINT ["/root/start.sh"]
