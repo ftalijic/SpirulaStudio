@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       spirula_version:
-        description: "Spirula release (without the v), e.g. 2026.9.24 - leave empty to use the Dockerfile's pinned value"
+        description: "Spirula release (without the v), e.g. 2026.10.30 - leave empty to use the Dockerfile's pinned value"
         required: false
         default: ""
       spirula_sha256:
