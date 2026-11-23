@@ -69,8 +69,8 @@ FROM ubuntu:24.04 AS spirula
 # Pinned on purpose (lesson from LichtFeld's floating LFS_REF=master): bump
 # both values together when moving to a new release. Releases:
 # https://github.com/harry7557558/spirula-studio/releases
-ARG SPIRULA_VERSION=2026.10.30
-ARG SPIRULA_SHA256=19e9fdabdfa73d26cabd7e078ea6b12f2f8b976e457d21b83d6a30e4921ad5a2
+ARG SPIRULA_VERSION=2026.11.12
+ARG SPIRULA_SHA256=07afb39882f336555633a17023a18c52502dcf0a18b23fe62fa5dd1c24b19a93
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl unzip \
     && rm -rf /var/lib/apt/lists/*

@@ -1,29 +1,22 @@
-# Spirula Studio 2026.9.24 -> 2026.10.30 (RunPod image)
+# Spirula Studio 2026.10.30 -> 2026.11.12 (RunPod image)
 
-Checked 2026-11-05: v2026.10.30 (released 2026-10-30) is still the latest.
-Checksum of spirula-2026.10.30-ubuntu-vulkan-x86_64.zip was verified against
-the GitHub release digest: 19e9fdab...ad5a2. The zip layout is unchanged
-(`spirula` binary at the zip root).
-
-## Apply
-1. Copy Dockerfile, build-image.yml and README.md over the files in the
-   GitHub repo. build-image.yml goes to .github/workflows/. Or run
-   `git apply v2026.10.30.patch`, after moving the workflow path in the patch
-   if you need to.
-2. Push to main. The Action builds and pushes dakord/spirula-studio:latest
-   plus a run-number tag. To keep a rollback, note the current run-number tag
-   (9.24) before pushing.
+Checked 2026-11-23: v2026.11.12 (released 2026-11-12) is the latest.
+SHA-256 of spirula-2026.11.12-ubuntu-vulkan-x86_64.zip is the GitHub release
+digest (read from the GitHub API twice, same value both times). The Docker
+build re-checks it with `sha256sum -c`, so a wrong value fails the build.
+Zip layout (`spirula` binary at the zip root) not verified; the Dockerfile's
+`spirula --help` step fails the build if it changed.
 
 ## Verify on the first pod
-    cat /opt/spirula/VERSION                   # 2026.10.30
+    cat /opt/spirula/VERSION                   # 2026.11.12
     cat /root/vulkan-check.log; spirula sam devices; colmap -h | head -3
-    spirula train --help-all > /workspace/spirula_train_help_2026.10.30.txt
-Diff that help output against the saved 2026.9.30 help file, and check every
-flag in Guides/Spirula_Quality_Flags.md still exists. Then re-run one known
-scene (KRK VID_001) before trusting old flag values: 10.6 and 10.30 both change
-training quality.
+    spirula train --help-all > /workspace/spirula_train_help_2026.11.12.txt
+Check: `--calib-correction` (off|basic|accurate) and `--calib-warp-grid` exist;
+`--floater-suppression` now takes mild|moderate|strong (old strong = moderate);
+distraction robustness moved to advanced options (`--help-all | grep distraction`).
+Release notes say training quality changes on purpose: re-run a known scene
+before trusting old flag values.
 
-## Not covered here
-- Local spirula.exe is still 2026.9.30. Windows zip:
-  spirula-2026.10.30-windows-vulkan-x86_64.zip
-  (sha256 dfaf1376ab78acf4bfbaaeb7a3f12b7c06ab30bf1d9eee6082100dbc1e7b71dd)
+## Rollback
+The previous image (10.30) keeps its run-number tag on Docker Hub
+(dakord/spirula-studio:<run number>); check the Actions history for it.

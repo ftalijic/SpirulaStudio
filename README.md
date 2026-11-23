@@ -28,7 +28,7 @@ To bump Spirula, edit `SPIRULA_VERSION` and `SPIRULA_SHA256` in the Dockerfile. 
 cat /root/vulkan-check.log     # GPU name + Vulkan apiVersion; should NOT show ERROR
 spirula sam devices            # must list the GPU as meeting the baseline (Vulkan 1.2 + BDA + timeline semaphores)
 colmap -h | head -3            # "COLMAP 4.x ... with CUDA"
-cat /opt/spirula/VERSION       # pinned Spirula release, e.g. 2026.10.30
+cat /opt/spirula/VERSION       # pinned Spirula release, e.g. 2026.11.12
 ```
 
 If `spirula sam devices` says "no Vulkan devices were found", the host isn't giving the container the driver's graphics/Vulkan libraries. The image sets `NVIDIA_DRIVER_CAPABILITIES=all` and ships a fallback ICD file, so check `ls /usr/lib/x86_64-linux-gnu/libGLX_nvidia*`. If nothing is there, try a different GPU type or datacenter.
